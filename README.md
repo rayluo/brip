@@ -6,6 +6,26 @@ It brings the Python packages ecosystem and the pip-like workflow to Brython-pow
 You can use `brip` to install packages from the [PyPI](https://pypi.org) and other indexes, into your different Brython project.
 
 
+## Problem Statement
+
+* Historically, most **brython-oriented** Python packages are
+  pre-compiled into - and distributed as - a javascript file.
+  This works well for those self-contained Python packages,
+  but when/if a Python package has its own dependencies,
+  there was no obvious way to declare and manage those dependencies.
+* In general, there was no Pythonic way to install a **generic Python** package
+  and their dependencies, directly from PyPI into your Brython project.
+
+`brip` is developed to bring the PyPI ecosystem and the familiar pip-like workflow
+to Brython-powered projects.
+
+
+## Quickstart: A complete sample project
+
+There is a complete sample project, [Easter](https://github.com/rayluo/easter),
+to demonstrate how to use `brip`.
+
+
 ## Installation
 
 `brip` can be installed by `pip` with the name `brython-brip`.
@@ -31,12 +51,13 @@ pip install brython-brip
 ```
 
 
-## Quickstart
+## Manual: Command-line usage
 
-This quickstart assumes you use Linux or macOS.
+This manual assumes you use Linux or macOS.
 Windows users please adjust the path separator in each sample.
 
-* Install a package from [PyPI](https://pypi.org) into your Brython project's web root directory:
+* Install a package from [PyPI](https://pypi.org) into your Brython project's
+  web root directory (i.e. the directory containing your `index.html`):
 
   ```
   cd my_brython_project_one/website
@@ -66,7 +87,8 @@ Windows users please adjust the path separator in each sample.
   Because their installation target are completely different.
 
 
-* Install several packages from [PyPI](https://pypi.org) into your Brython project's web root directory:
+* Install several packages from [PyPI](https://pypi.org) into your Brython project's
+  web root directory (i.e. the directory containing your `index.html`):
 
   ```
   cd my_brython_project_two/website
@@ -115,13 +137,31 @@ by next `brip install -r brequirements.txt`.
 Please refer to the command-line help `brip -h` or `brip install -h` etc..
 
 
-## Packages compatibilities
+## Limitations
 
-Although `brip` theoretically gives you access to all packages on PyPI,
-Brython will only accept those packages not only themselves implemented in pure Python,
-but also their entire dependencies must be implemented in pure Python.
+`brip` aims to bring the entire Python Package Index (PyPI) ecosystem to Brython.
+However, in reality there are some limitations outside of the control of `brip`.
 
-Even so, some packages still won't work.
+* Brython-powered applications are running inside a browser.
+  The browser is a capable virtual machine in its own right.
+  However, many Python packages are not expected to be run inside a browser.
+  For example, file system behaves differently in Brython: Writing is impossible,
+  and reading is limited to the folders accessible with an Ajax request.
+
+* Brython itself only supports pure Python packages.
+  That excludes packages which are partially written in C, such as `numpy`.
+  Consequently, only those packages written in pure Python
+  *and its entire dependency chain* written in pure Python, would work in Brython.
+
+* Sometimes, even pure Python package might not work in Brython, due to some subtle
+  [differences between Brython and CPython](https://brython.info/static_doc/en/stdlib.html).
+
+* Unfortunately, there is currently no straightforward way to know
+  whether a Python package would work in Brython.
+  You probably have to rely on trial-and-error.
+  Just use `brip` to install a package, use it in Brython environment,
+  and see if the browser console logs any error.
+
 Feel free to report those packages into
 [brip's issue list](https://github.com/rayluo/brip/issues).
 `brip` might not be in position to solve it directly,
