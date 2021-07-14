@@ -79,7 +79,11 @@ def _install(args):  # Depends on Python 3.5+ for system.run()
             sources = args.packages if args.packages else ["-r", args.requirement]
             # `brython-cli --add_package foo` would NOT include foo's dependency.
             # We use pip. As a by-product, it does not pollute the current environment.
-            subprocess.run(["pip", "install"] + sources + ["-t", tempdir], check=True)
+            subprocess.run(["pip", "install"] + sources + ["-t", tempdir,
+                "--use-feature=in-tree-build"  # It is needed to opt in to
+                    # a new behavior which will become default in pip 21.3
+                    # https://github.com/pypa/pip/issues/7555
+                ], check=True)
 
             # We could use `brython-cli --modules` to scan everything (*.py, including *.html)
             # and build one brython_modules.js, which will typically be 2.4MB only,
