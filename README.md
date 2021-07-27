@@ -28,7 +28,7 @@ to demonstrate how to use `brip`.
 
 ## Installation
 
-`brip` can be installed by `pip` with the name `brython-brip`.
+Just run `pip install brip`.
 
 It is recommended that you install `brip` into one central virtual environment,
 *rather than* installing `brip` inside each of your brython project's environment.
@@ -39,7 +39,7 @@ Installation on Linux and macOS:
 ```
 python3 -m venv ~/venv_central
 source ~/venv_central/bin/activate
-pip install brython-brip
+pip install brip
 ```
 
 Installation on Windows:
@@ -47,7 +47,7 @@ Installation on Windows:
 ```
 py -m venv $HOME\venv_central
 $HOME\venv_central\Scripts\activate
-pip install brython-brip
+pip install brip
 ```
 
 
