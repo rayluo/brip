@@ -46,7 +46,7 @@ Installation on Windows:
 
 ```
 py -m venv $HOME\venv_central
-$HOME\venv_central\Scripts\activate
+$HOME\venv_central\Scripts\activate.bat
 pip install brip
 ```
 
@@ -166,4 +166,52 @@ Feel free to report those packages into
 [brip's issue list](https://github.com/rayluo/brip/issues).
 `brip` might not be in position to solve it directly,
 but the community might be able to help.
+
+
+## Recipe for Brython-friendly package's maintainers
+
+While we mentioned in the Problem Statement that `brip` was mainly developed to
+allow Brython app developers to pull generic Python packages from PyPI, for example:
+
+```
+# Inside the brequirements.txt, it contains the following line
+charts.css.py>=0.4,<1
+```
+
+there is nothing wrong for a self-contained, Brython-friendly package to
+be distributed as a javascript file, for example:
+
+```html
+<!-- Inside the index.html, it contains the following line -->
+<script src='https://github.com/rayluo/charts.css.py/releases/download/0.4.0/charts.css.py-brython.js'></script>
+```
+
+Here, the term "Brython-friendly" is defined as a generic, pure Python package
+that can be released to PyPI, but it is also designed to be able to work in Brython.
+
+So, how do you - a Brython-friendly package's maintainer - generate that javascript file?
+
+Here is how I pack my package
+[`charts.css.py`](https://github.com/rayluo/charts.css.py/releases/tag/0.4.0)
+into a `charts.css.py-brython.js`:
+
+```
+cd charts.css.py
+brip install .
+# Now a site-packages.brython.js is generated in current directory,
+# containing the PyPI-ready project in current directory.
+# I just need to rename it to charts.css.py-brython.js and distribute it.
+```
+
+While doing so, you may see a warning message on your console:
+
+```
+  DEPRECATION: A future pip version will change local packages to be built in-place without first copying to a temporary directory. We recommend you use --use-feature=in-tree-build to test your packages with this new behavior before it becomes the default.
+   pip 21.3 will remove support for this functionality. You can find discussion regarding this at https://github.com/pypa/pip/issues/7555.
+```
+
+You can just ignore that message. It has no negative impact to your javascript outcome.
+
+That warning message is expected to be gone once pip 21.3 becomes available
+and you upgrade to it (by running `python -m pip install --upgrade pip`).
 
