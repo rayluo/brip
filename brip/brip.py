@@ -7,7 +7,7 @@ import shutil
 import json
 
 
-__version__ = "0.2.0"
+__version__ = "0.2.2"
 
 _site_packages = "site-packages"
 _site_packages_filename = "{}.brython.js".format(_site_packages)
@@ -80,7 +80,13 @@ def _install(args):  # Depends on Python 3.5+ for system.run()
             # `brython-cli --add_package foo` would NOT include foo's dependency.
             # We use pip. As a by-product, it does not pollute the current environment.
             subprocess.run(["pip", "install"] + sources + ["-t", tempdir,
-                "--use-feature=in-tree-build"  # It is needed to opt in to
+                ## Don't bother opting in to the in-tree-build behavior.
+                # I've tested it manually that the future in-tree-build would work.
+                # And it is not worthy to have a hard dependency on pip 21.1+
+                # because it would cause https://github.com/rayluo/easter/issues/1
+                #
+                #"--use-feature=in-tree-build"  # Available since pip 21.1+
+                    # It is needed to opt in to
                     # a new behavior which will become default in pip 21.3
                     # https://github.com/pypa/pip/issues/7555
                 ], check=True)
