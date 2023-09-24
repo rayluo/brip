@@ -153,6 +153,10 @@ However, in reality there are some limitations outside of the control of `brip`.
   Consequently, only those packages written in pure Python
   *and its entire dependency chain* written in pure Python, would work in Brython.
 
+* As of this writing, Brython 3.10.5 does not support converting
+  [namespace packages](https://packaging.python.org/en/latest/guides/packaging-namespace-packages/)
+  into a loadable javascript file.
+
 * Sometimes, even pure Python package might not work in Brython, due to some subtle
   [differences between Brython and CPython](https://brython.info/static_doc/en/stdlib.html).
 
