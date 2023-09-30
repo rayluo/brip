@@ -51,6 +51,9 @@ def main():
     parser_install.add_argument(
         "-t", "--target", metavar="<dir>", default=".",
         help="Install packages into <dir>/{}.".format(_site_packages_filename))
+    parser_install.add_argument(
+        "-i", "--index-url", metavar="<url>", default="https://pypi.org/simple",
+        help="Base URL of the Python Package Index.")
     parser_install.set_defaults(func=_install, parser=parser_install)
 
     parser_list = subparsers.add_parser(
@@ -73,13 +76,14 @@ def _install(args):  # Depends on Python 3.5+ for system.run()
     if (args.packages and args.requirement) or (
             (not args.packages) and (not args.requirement)):
         args.parser.print_help()
-        sys.exit("Need a package name or a requirements file")
+        sys.exit("Need package name(s) or a requirements file")
     try:
         with tempfile.TemporaryDirectory() as tempdir:
             sources = args.packages if args.packages else ["-r", args.requirement]
             # `brython-cli --add_package foo` would NOT include foo's dependency.
             # We use pip. As a by-product, it does not pollute the current environment.
-            subprocess.run(["pip", "install"] + sources + ["-t", tempdir,
+            subprocess.run(["pip", "install", "-i", args.index_url] + sources + [
+                "-t", tempdir,
                 ## Don't bother opting in to the in-tree-build behavior.
                 # I've tested it manually that the future in-tree-build would work.
                 # And it is not worthy to have a hard dependency on pip 21.1+
