@@ -7,7 +7,7 @@ import shutil
 import json
 
 
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 
 _site_packages = "site-packages"
 _site_packages_filename = "{}.brython.js".format(_site_packages)
